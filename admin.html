@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RSM Group — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --bg-soft:#f6f8fa; --bg-card:#ffffff;
+  --line:#e5e8ec; --line-strong:#d0d7de;
+  --text:#1f2328; --text-muted:#656d76;
+  --primary:#1a7f64; --primary-hover:#156a53; --primary-soft:#e9f5f1;
+  --accent:#c98a1b; --accent-soft:#fdf6e8;
+  --danger:#cf222e; --danger-soft:#fdecee;
+  --radius:10px; --radius-sm:8px;
+  --shadow:0 1px 3px rgba(31,35,40,.08),0 4px 12px rgba(31,35,40,.04);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100vh;font-family:'Hind Siliguri',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;font-weight:500;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font-family:inherit;font-size:14px;color:inherit}
+button{cursor:pointer}
+a{color:var(--primary);text-decoration:none}
+svg.icon{width:18px;height:18px;flex-shrink:0;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+
+.app-header{width:100%;background:var(--bg);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:900}
+.app-header-inner{max-width:1200px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-logo{width:40px;height:40px;border-radius:9px;object-fit:cover;border:1px solid var(--line)}
+.brand-name{font-weight:700;font-size:17px;letter-spacing:-.2px}
+.brand-name span{color:var(--primary)}
+.header-actions{display:flex;gap:8px}
+
+.container{max-width:1200px;margin:0 auto;padding:22px 20px 60px}
+.card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:20px}
+.card-title{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.page-bar{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.page-bar h2{font-size:18px;font-weight:700}
+.muted{color:var(--text-muted);font-size:13px}
+
+.login-wrap{max-width:420px;margin:64px auto}
+.login-wrap .card{padding:30px}
+.login-head{text-align:center;margin-bottom:22px}
+.login-head img{width:52px;height:52px;border-radius:11px;object-fit:cover;border:1px solid var(--line);margin-bottom:12px}
+.login-head h1{font-size:19px;font-weight:700;margin-bottom:6px}
+.login-head p{color:var(--text-muted);font-size:13px}
+
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text)}
+.form-control{width:100%;padding:11px 13px;border-radius:var(--radius-sm);border:1px solid var(--line-strong);background:var(--bg);font-size:14px;transition:border-color .15s,box-shadow .15s}
+.form-control:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+textarea.form-control{resize:vertical;min-height:64px}
+.file-input{padding:9px;font-size:13px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 16px;border-radius:var(--radius-sm);font-weight:600;font-size:14px;border:1px solid transparent;transition:.15s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-block{width:100%}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover:not(:disabled){background:var(--primary-hover)}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-accent:hover:not(:disabled){filter:brightness(.94)}
+.btn-outline{background:var(--bg);color:var(--text);border-color:var(--line-strong)}
+.btn-outline:hover:not(:disabled){background:var(--bg-soft)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover:not(:disabled){filter:brightness(.94)}
+.btn-sm{padding:7px 12px;font-size:13px;border-radius:7px}
+
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:22px}
+@media(min-width:720px){.stat-grid{grid-template-columns:repeat(4,1fr)}}
+.stat-box{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:18px;text-align:left;transition:.15s}
+.stat-box[role="button"]:hover{border-color:var(--primary);box-shadow:var(--shadow);cursor:pointer}
+.stat-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;background:var(--primary-soft);color:var(--primary)}
+.stat-icon.gold{background:var(--accent-soft);color:var(--accent)}
+.stat-label{font-size:12.5px;color:var(--text-muted);font-weight:600}
+.stat-value{font-size:22px;font-weight:700;margin-top:2px}
+
+.nav-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:720px){.nav-grid{grid-template-columns:repeat(3,1fr)}}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:var(--radius);border:1px solid var(--line);background:var(--bg);font-weight:600;font-size:14px;text-align:left;transition:.15s;color:var(--text)}
+.nav-btn:hover{border-color:var(--primary);background:var(--primary-soft);color:var(--primary)}
+.nav-btn svg{color:var(--text-muted)}
+.nav-btn:hover svg{color:var(--primary)}
+
+.page{display:none}
+.page.active{display:block;animation:fadeIn .18s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.list-item{border:1px solid var(--line);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:10px;background:var(--bg);display:flex;flex-direction:column;gap:10px}
+@media(min-width:720px){.list-item{flex-direction:row;align-items:center;justify-content:space-between}}
+.list-item .info{flex:1;min-width:0}
+.list-item .info b{font-weight:600}
+.list-item .info .row-line{font-size:13px;color:var(--text-muted);margin-top:2px;word-break:break-word}
+.list-item .actions{display:flex;gap:6px;flex-wrap:wrap;flex-shrink:0}
+.thumb{width:48px;height:48px;border-radius:7px;object-fit:cover;border:1px solid var(--line);flex-shrink:0}
+.product-row{display:flex;align-items:center;gap:12px}
+.serial-badge{width:26px;height:26px;border-radius:7px;background:var(--bg-soft);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text-muted);flex-shrink:0}
+.status-tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600;background:var(--bg-soft);border:1px solid var(--line);color:var(--text-muted)}
+.status-tag.ok{background:var(--primary-soft);border-color:transparent;color:var(--primary)}
+.status-tag.warn{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+.status-tag.bad{background:var(--danger-soft);border-color:transparent;color:var(--danger)}
+
+.preview-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.preview-row img{width:70px;height:70px;object-fit:cover;border-radius:7px;border:1px solid var(--line)}
+.preview-row .banner-preview{width:100%;max-height:140px;object-fit:contain;background:var(--bg-soft)}
+
+.empty{color:var(--text-muted);font-size:14px;text-align:center;padding:24px 12px;border:1px dashed var(--line-strong);border-radius:var(--radius-sm)}
+
+.modal-backdrop{position:fixed;inset:0;background:rgba(31,35,40,.45);z-index:3000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
+.modal-backdrop.show{display:flex}
+.modal-box{background:var(--bg);border-radius:14px;max-width:420px;width:100%;padding:26px 22px;box-shadow:0 20px 60px rgba(31,35,40,.25);text-align:center;animation:pop .18s cubic-bezier(.34,1.4,.64,1)}
+@keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-box h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.modal-box p{font-size:14px;color:var(--text-muted);margin-bottom:20px}
+.modal-box .btn{min-width:110px}
+
+.spinner{width:18px;height:18px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.gs-wrap{background:var(--bg-card);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.gs-header{padding:22px 22px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px}
+.gs-avatar{width:56px;height:56px;border-radius:50%;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:22px;flex-shrink:0;letter-spacing:.5px}
+.gs-title{font-size:17px;font-weight:700;line-height:1.25;word-break:break-word}
+.gs-sub{font-size:13px;color:var(--text-muted);margin-top:2px;word-break:break-all}
+.gs-section{padding:6px 0}
+.gs-section-label{font-size:12px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;padding:12px 22px 6px}
+.gs-row{display:flex;align-items:flex-start;gap:14px;padding:14px 22px;border-top:1px solid var(--line);transition:background .12s}
+.gs-row:first-child{border-top:none}
+.gs-row:hover{background:var(--bg-soft)}
+.gs-row.clickable{cursor:pointer}
+.gs-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg-soft);color:var(--text-muted);flex-shrink:0}
+.gs-icon svg{width:16px;height:16px}
+.gs-content{flex:1;min-width:0}
+.gs-label{font-size:12.5px;color:var(--text-muted);font-weight:500;margin-bottom:2px}
+.gs-value{font-size:14.5px;font-weight:600;color:var(--text);word-break:break-word;line-height:1.4}
+.gs-value.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:var(--text-muted);font-weight:500}
+.gs-chevron{color:var(--line-strong);flex-shrink:0;transition:transform .2s;margin-top:6px}
+.gs-row.expanded .gs-chevron{transform:rotate(180deg)}
+.gs-subpanel{display:none;border-top:1px solid var(--line);background:var(--bg-soft);padding:4px 22px 12px 70px}
+.gs-subpanel.show{display:block}
+.gs-subpanel .list-item{background:var(--bg-card)}
+.gs-empty{color:var(--text-muted);font-size:13.5px;padding:14px 0}
+.gs-badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600;background:var(--bg-soft);border:1px solid var(--line);color:var(--text-muted);margin-top:2px}
+.gs-badge.ok{background:var(--primary-soft);border-color:transparent;color:var(--primary)}
+.gs-badge.warn{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+.gs-badge.bad{background:var(--danger-soft);border-color:transparent;color:var(--danger)}
+
+/* ==== Commission Page ==== */
+.comm-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px}
+@media(min-width:720px){.comm-grid{grid-template-columns:repeat(4,1fr)}}
+.comm-stat{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.comm-stat .label{font-size:12px;color:var(--text-muted);font-weight:600;margin-bottom:4px}
+.comm-stat .value{font-size:20px;font-weight:700}
+.comm-stat .value.ok{color:var(--primary)}
+.comm-stat .value.bad{color:var(--danger)}
+.comm-stat .value.gold{color:var(--accent)}
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.filter-bar .form-control{max-width:260px}
+
+/* Batch group */
+.batch-group{border:1px solid var(--line);border-radius:var(--radius);margin-bottom:16px;overflow:hidden;background:var(--bg-card)}
+.batch-head{background:var(--bg-soft);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--line);cursor:pointer}
+.batch-head h4{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
+.batch-head .batch-meta{font-size:12.5px;color:var(--text-muted);font-weight:600}
+.batch-body{padding:0}
+.batch-body.collapsed{display:none}
+
+.batch-row{display:flex;flex-direction:column;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line);transition:background .12s;cursor:pointer}
+.batch-row:last-child{border-bottom:none}
+.batch-row:hover{background:var(--bg-soft)}
+@media(min-width:720px){.batch-row{flex-direction:row;align-items:center;justify-content:space-between}}
+.batch-row .info{flex:1;min-width:0}
+.batch-row .info b{font-size:14.5px}
+.batch-row .row-line{font-size:12.5px;color:var(--text-muted);margin-top:3px;word-break:break-word}
+.batch-row .row-line b{color:var(--text)}
+
+/* Income badge (SO/BO/AM/GM/R15) */
+.inc-badge{display:inline-block;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:800;margin-left:6px;letter-spacing:.4px;border:1px solid transparent;vertical-align:middle;cursor:pointer;transition:.15s}
+.inc-badge:hover{transform:translateY(-1px);box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.inc-badge.SO{background:#e8f5e9;color:#2e7d32;border-color:#a5d6a7}
+.inc-badge.BO{background:#e3f2fd;color:#1565c0;border-color:#90caf9}
+.inc-badge.AM{background:#fff3e0;color:#ef6c00;border-color:#ffcc80}
+.inc-badge.GM{background:#fce4ec;color:#c2185b;border-color:#f48fb1}
+.inc-badge.R15{background:#f3e5f5;color:#6a1b9a;border-color:#ce93d8}
+
+/* Progress bar */
+.prog-wrap{margin-top:8px}
+.prog-bar{width:100%;height:8px;background:var(--bg-soft);border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+.prog-fill{height:100%;background:linear-gradient(90deg,#1a7f64,#22b58e);transition:width .3s}
+.prog-fill.done{background:linear-gradient(90deg,#156a53,#0e8a68)}
+.prog-text{font-size:11.5px;color:var(--text-muted);margin-top:3px;font-weight:600}
+
+/* Ref chips */
+.ref-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.ref-chip{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;background:var(--primary-soft);color:var(--primary);font-weight:600}
+
+/* Auto badge notice */
+.auto-note{background:var(--primary-soft);color:var(--primary);padding:10px 14px;border-radius:8px;font-size:12.5px;font-weight:600;margin-bottom:16px;border:1px solid #b8e0d2;display:flex;align-items:center;gap:8px}
+
+/* Big clickable badge */
+.big-badge{display:inline-flex;align-items:center;justify-content:center;padding:6px 14px;border-radius:8px;font-size:14px;font-weight:800;letter-spacing:.5px;cursor:pointer;transition:.15s;border:2px solid transparent;margin-right:10px}
+.big-badge:hover{transform:scale(1.05)}
+.big-badge.SO{background:#e8f5e9;color:#2e7d32;border-color:#4caf50}
+.big-badge.BO{background:#e3f2fd;color:#1565c0;border-color:#2196f3}
+.big-badge.AM{background:#fff3e0;color:#ef6c00;border-color:#ff9800}
+.big-badge.GM{background:#fce4ec;color:#c2185b;border-color:#e91e63}
+.big-badge.R15{background:#f3e5f5;color:#6a1b9a;border-color:#9c27b0}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="app-header-inner">
+    <div class="brand">
+      <img src="https://i.ibb.co.com/5Wc8DJjz/Messenger-creation-0671974-A-A83-D-4-F61-A39-E-243374-AC1-E33.jpg" alt="RSM" class="brand-logo">
+      <div class="brand-name">RSM <span>Admin</span></div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline btn-sm" id="btnRefresh" style="display:none">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/></svg>
+        <span id="btnRefreshLabel">রিফ্রেশ</span>
+      </button>
+      <button class="btn btn-outline btn-sm" id="btnLogout" style="display:none">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+        <span>লগআউট</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="login-wrap" id="loginScreen" style="display:none">
+    <div class="card">
+      <div class="login-head">
+        <img src="https://i.ibb.co.com/5Wc8DJjz/Messenger-creation-0671974-A-A83-D-4-F61-A39-E-243374-AC1-E33.jpg" alt="RSM">
+        <h1>অ্যাডমিন লগইন</h1>
+        <p>শুধুমাত্র অনুমোদিত অ্যাডমিন অ্যাকাউন্ট</p>
+      </div>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="adminEmail">অ্যাডমিন ইমেইল</label>
+          <input class="form-control" id="adminEmail" type="email" autocomplete="username" placeholder="admin@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="adminPassword">পাসওয়ার্ড</label>
+          <input class="form-control" id="adminPassword" type="password" autocomplete="current-password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="loginBtn">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+          লগইন করুন
+        </button>
+        <p id="loginMsg" style="color:var(--danger);font-size:13px;margin-top:12px;min-height:18px"></p>
+      </form>
+    </div>
+  </section>
+
+  <div id="bootScreen" style="display:flex;justify-content:center;align-items:center;min-height:60vh">
+    <div style="text-align:center;color:var(--text-muted)">
+      <div class="spinner" style="width:26px;height:26px;border-width:3px;color:var(--primary);margin:0 auto 12px"></div>
+      <div style="font-size:13.5px">লোড হচ্ছে…</div>
+    </div>
+  </div>
+
+  <div id="appRoot" style="display:none">
+
+    <section class="page active" id="pageDashboard">
+      <div class="stat-grid">
+        <div class="stat-box" role="button" tabindex="0" onclick="showPage('users')">
+          <div class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="stat-label">মোট ইউজার</div>
+          <div class="stat-value" id="statUsers">0</div>
+        </div>
+        <div class="stat-box" role="button" tabindex="0" onclick="showPage('orders')">
+          <div class="stat-icon gold"><svg class="icon" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+          <div class="stat-label">মোট অর্ডার</div>
+          <div class="stat-value" id="statOrders">0</div>
+        </div>
+        <div class="stat-box" role="button" tabindex="0" onclick="showPage('products')">
+          <div class="stat-icon"><svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg></div>
+          <div class="stat-label">মোট পণ্য</div>
+          <div class="stat-value" id="statProducts">0</div>
+        </div>
+        <div class="stat-box" role="button" tabindex="0" onclick="showPage('bannerForm')">
+          <div class="stat-icon gold"><svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
+          <div class="stat-label">নোটিশ ব্যানার</div>
+          <div class="stat-value" id="statBanners">0</div>
+        </div>
+      </div>
+
+      <div class="nav-grid">
+        <button class="nav-btn" onclick="showPage('productForm')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+          পণ্য পাবলিশ
+        </button>
+        <button class="nav-btn" onclick="showPage('bannerForm')">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 11h18"/></svg>
+          ব্যানার ম্যানেজ
+        </button>
+        <button class="nav-btn" onclick="showPage('products')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          সকল পণ্য
+        </button>
+        <button class="nav-btn" onclick="showPage('users')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          সকল ইউজার
+        </button>
+        <button class="nav-btn" onclick="showPage('orders')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          সকল অর্ডার
+        </button>
+        <button class="nav-btn" onclick="showPage('withdrawals')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          উইথড্র রিকোয়েস্ট
+        </button>
+        <button class="nav-btn" onclick="showPage('commission')" style="border-color:var(--primary);background:var(--primary-soft);color:var(--primary)">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          কমিশন / ব্যাচ
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== COMMISSION PAGE ==================== -->
+    <section class="page" id="pageCommission">
+      <div class="page-bar">
+        <button class="btn btn-outline btn-sm" onclick="showPage('dashboard')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> ফিরে যান
+        </button>
+        <h2>কমিশন ড্যাশবোর্ড</h2>
+      </div>
+
+      <div class="auto-note">
+        <svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        ব্যাচ সম্পূর্ণ স্বয়ংক্রিয় — শর্ত পূরণ হলেই ইউজারের নামের পাশে বসে যায়। কোনো ম্যানুয়াল অ্যাপ্রুভ লাগে না।
+      </div>
+
+      <div class="comm-grid">
+        <div class="comm-stat"><div class="label">মোট ইউজার</div><div class="value" id="cmTotalUsers">0</div></div>
+        <div class="comm-stat"><div class="label">SO (১০ হাজার+)</div><div class="value ok" id="cmSO">0</div></div>
+        <div class="comm-stat"><div class="label">BO+ (২৫ হাজার+)</div><div class="value gold" id="cmBO">0</div></div>
+        <div class="comm-stat"><div class="label">R15 (১০ লাখ+)</div><div class="value" id="cmR15" style="color:#6a1b9a">0</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+          ইনকাম-ভিত্তিক ব্যাচ (স্বয়ংক্রিয়)
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <div style="flex:1;min-width:120px;padding:12px;background:#e8f5e9;border-radius:8px;text-align:center;border:1px solid #a5d6a7">
+            <div style="font-size:16px;font-weight:800;color:#2e7d32">SO</div>
+            <div style="font-size:12px;color:#2e7d32;margin-top:4px">৳১০,০০০+</div>
+          </div>
+          <div style="flex:1;min-width:120px;padding:12px;background:#e3f2fd;border-radius:8px;text-align:center;border:1px solid #90caf9">
+            <div style="font-size:16px;font-weight:800;color:#1565c0">BO</div>
+            <div style="font-size:12px;color:#1565c0;margin-top:4px">৳২৫,০০০+</div>
+          </div>
+          <div style="flex:1;min-width:120px;padding:12px;background:#fff3e0;border-radius:8px;text-align:center;border:1px solid #ffcc80">
+            <div style="font-size:16px;font-weight:800;color:#ef6c00">AM</div>
+            <div style="font-size:12px;color:#ef6c00;margin-top:4px">৳৬০,০০০+</div>
+          </div>
+          <div style="flex:1;min-width:120px;padding:12px;background:#fce4ec;border-radius:8px;text-align:center;border:1px solid #f48fb1">
+            <div style="font-size:16px;font-weight:800;color:#c2185b">GM</div>
+            <div style="font-size:12px;color:#c2185b;margin-top:4px">৳২,০০,০০০+</div>
+          </div>
+          <div style="flex:1;min-width:120px;padding:12px;background:#f3e5f5;border-radius:8px;text-align:center;border:1px solid #ce93d8">
+            <div style="font-size:16px;font-weight:800;color:#6a1b9a">R15</div>
+            <div style="font-size:12px;color:#6a1b9a;margin-top:4px">৳১০,০০,০০০+</div>
+          </div>
+        </div>
+        <p class="muted" style="margin-top:12px;font-size:12.5px">
+          👉 ব্যাজের উপর ক্লিক করলে ঐ ইউজারের সম্পূর্ণ প্রোফাইল দেখা যাবে।
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
+          সার্চ ও ফিল্টার
+        </div>
+        <div class="filter-bar">
+          <select class="form-control" id="cmBatchFilter" onchange="renderCommission()">
+            <option value="">সকল ব্যাচ</option>
+            <option value="SO">SO (৳১০ হাজার+)</option>
+            <option value="BO">BO (৳২৫ হাজার+)</option>
+            <option value="AM">AM (৳৬০ হাজার+)</option>
+            <option value="GM">GM (৳২ লাখ+)</option>
+            <option value="R15">R15 (৳১০ লাখ+)</option>
+            <option value="none">কোনো ব্যাচ নেই</option>
+          </select>
+          <input class="form-control" id="cmSearch" placeholder="নাম / ইমেইল / ফোন" oninput="renderCommission()">
+        </div>
+      </div>
+
+      <div id="commissionBatches"></div>
+    </section>
+
+    <section class="page" id="pageProductForm">
+      <div class="page-bar">
+        <button class="btn btn-outline btn-sm" onclick="showPage('dashboard')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> ফিরে যান
+        </button>
+        <h2>পণ্য পাবলিশ / এডিট</h2>
+      </div>
+      <div class="card">
+        <div class="card-title" id="productFormTitle">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg> নতুন পণ্য আপলোড করুন
+        </div>
+        <form id="productForm">
+          <input type="hidden" id="editProductId" value="">
+          <div class="form-group"><label>পণ্যের নাম (বাংলা) *</label><input class="form-control" id="prodNameBn" required placeholder="যেমন: প্রিমিয়াম পাঞ্জাবি"></div>
+          <div class="form-group"><label>Product Name (English) *</label><input class="form-control" id="prodNameEn" required placeholder="e.g. Premium Panjabi"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="form-group"><label>দাম (৳) *</label><input class="form-control" id="prodPrice" type="number" min="0" required placeholder="750"></div>
+            <div class="form-group"><label>বোনাস (৳)</label><input class="form-control" id="prodBonus" type="number" min="0" value="0" placeholder="20"></div>
+          </div>
+          <div class="form-group"><label>বিবরণ (বাংলা) *</label><textarea class="form-control" id="prodDescBn" rows="2" required></textarea></div>
+          <div class="form-group"><label>Description (English) *</label><textarea class="form-control" id="prodDescEn" rows="2" required></textarea></div>
+          <div class="form-group">
+            <label>ছবি (১–১০টি) *</label>
+            <input class="form-control file-input" id="prodImageFiles" type="file" accept="image/*" multiple>
+            <div class="preview-row" id="productPreview"></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button type="submit" class="btn btn-primary" id="productSubmitBtn">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>
+              পণ্য পাবলিশ করুন
+            </button>
+            <button type="button" class="btn btn-outline" id="productCancelBtn" style="display:none" onclick="cancelEditProduct()">এডিট বাতিল</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="page" id="pageBannerForm">
+      <div class="page-bar">
+        <button class="btn btn-outline btn-sm" onclick="showPage('dashboard')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> ফিরে যান
+        </button>
+        <h2>নোটিশ ব্যানার</h2>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 11h18"/></svg> নতুন ব্যানার যোগ করুন
+        </div>
+        <form id="bannerForm">
+          <div class="form-group">
+            <label>ব্যানার ছবি *</label>
+            <input class="form-control file-input" id="bannerFile" type="file" accept="image/*" required>
+            <div class="preview-row" id="bannerPreview"></div>
+          </div>
+          <button type="submit" class="btn btn-accent" id="bannerSubmitBtn">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg> ব্যানার প্রকাশ করুন
+          </button>
+        </form>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg> প্রকাশিত ব্যানার
+        </div>
+        <div id="bannerList"></div>
+      </div>
+    </section>
+
+    <section class="page" id="pageProducts">
+      <div class="page-bar">
+        <button class="btn btn-outline btn-sm" onclick="showPage('dashboard')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> ফিরে যান
+        </button>
+        <h2>সকল পণ্য</h2>
+      </div>
+      <div class="card"><div id="productList"></div></div>
+    </section>
+
+    <section class="page" id="pageUsers">
+      <div class="page-bar">
+        <button class="btn btn-outline btn-sm" onclick="showPage('dashboard')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> ফিরে যান
+        </button>
+        <h2>সকল ইউজার</h2>
+      </div>
+      <div class="card"><div id="userList"></div></div>
+    </section>
+
+    <section class="page" id="pageDetail">
+      <div class="page-bar">
+        <button class="btn btn-outline btn-sm" id="detailBackBtn" onclick="showPage('users')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> ফিরে যান
+        </button>
+        <h2 id="detailTitle">বিস্তারিত</h2>
+      </div>
+      <div id="detailContent"></div>
+    </section>
+
+    <section class="page" id="pageOrders">
+      <div class="page-bar">
+        <button class="btn btn-outline btn-sm" onclick="showPage('dashboard')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> ফিরে যান
+        </button>
+        <h2>সকল অর্ডার</h2>
+      </div>
+      <div class="card"><div id="orderList"></div></div>
+    </section>
+
+    <section class="page" id="pageWithdrawals">
+      <div class="page-bar">
+        <button class="btn btn-outline btn-sm" onclick="showPage('dashboard')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> ফিরে যান
+        </button>
+        <h2>উইথড্র রিকোয়েস্ট</h2>
+      </div>
+      <div class="card"><div id="withdrawalList"></div></div>
+    </section>
+
+  </div>
+</main>
+
+<div class="modal-backdrop" id="alertModal">
+  <div class="modal-box">
+    <h3 id="alertTitle">নোটিশ</h3>
+    <p id="alertMsg"></p>
+    <button class="btn btn-primary" onclick="closeAlert()">ঠিক আছে</button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { getFirestore, collection, doc, getDocs, getDoc, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyATWMcdN_LSMJeAUq84zuujkA7v0B0gQlc",
+  authDomain: "gsp-group-3ca34.firebaseapp.com",
+  projectId: "gsp-group-3ca34",
+  storageBucket: "gsp-group-3ca34.firebasestorage.app",
+  messagingSenderId: "123828183643",
+  appId: "1:123828183643:web:50890a115f10cb8e18557e",
+  measurementId: "G-XRBWNXF4MP"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const $ = id => document.getElementById(id);
+const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function alertBox(title, msg){
+  $("alertTitle").textContent = title;
+  $("alertMsg").textContent = msg;
+  $("alertModal").classList.add("show");
+}
+window.closeAlert = () => $("alertModal").classList.remove("show");
+
+let products = [], users = [], orders = [], banners = [], withdrawals = [];
+let selectedProductFiles = [];
+let selectedBannerFile = null;
+let loaded = false;
+let currentUserId = null;
+
+// ============================================================
+// AUTO INCOME BATCH SYSTEM (SO, BO, AM, GM, R15)
+// শর্ত পূরণ হলেই স্বয়ংক্রিয়ভাবে নামের পাশে বসে
+// ============================================================
+const INCOME_TIERS = [
+  { code: "SO",  threshold: 10000,   label: "SO",  labelBn: "৳১০ হাজার" },
+  { code: "BO",  threshold: 25000,   label: "BO",  labelBn: "৳২৫ হাজার" },
+  { code: "AM",  threshold: 60000,   label: "AM",  labelBn: "৳৬০ হাজার" },
+  { code: "GM",  threshold: 200000,  label: "GM",  labelBn: "৳২ লাখ" },
+  { code: "R15", threshold: 1000000, label: "R15", labelBn: "৳১০ লাখ" },
+];
+
+function getUserReferralIncome(u){
+  return Number(
+    u.referral_income ?? u.refer_income ?? u.ref_income ??
+    u.commission_income ?? u.total_referral_income ?? 0
+  );
+}
+
+function getIncomeBatchCode(income){
+  let code = "";
+  for(const t of INCOME_TIERS){ if(income >= t.threshold) code = t.code; }
+  return code;
+}
+
+// ব্যাজ তৈরি — ক্লিকেবল (ক্লিক করলে ইউজার প্রোফাইল খুলবে)
+function incomeBadgeHTML(u, size="sm"){
+  const inc = getUserReferralIncome(u);
+  const code = getIncomeBatchCode(inc);
+  if(!code) return "";
+  if(size === "big"){
+    return `<span class="big-badge ${code}" onclick="event.stopPropagation(); openUserDetail('${u.id}')" title="ইনকাম: ৳${inc.toLocaleString('en-IN')} · ক্লিক করুন">${code}</span>`;
+  }
+  return `<span class="inc-badge ${code}" onclick="event.stopPropagation(); openUserDetail('${u.id}')" title="ইনকাম: ৳${inc.toLocaleString('en-IN')} · ক্লিক করুন">${code}</span>`;
+}
+
+// রেফারেল গণনা
+function getUserReferrals(u){
+  const code = String(u.referCode || u.refer_code || u.my_refer_code || "").trim();
+  const uid = String(u.id || u.uid || u.auth_user_id || "").trim();
+  const email = String(u.email || "").trim().toLowerCase();
+  return users.filter(x => {
+    if(x.id === u.id) return false;
+    const refByCode = String(x.referredBy || x.referred_by || x.referrer_code || x.ref_code || "").trim();
+    const refByUid = String(x.referred_by_uid || x.referrer_uid || "").trim();
+    const refByEmail = String(x.referred_by_email || "").trim().toLowerCase();
+    if(code && refByCode === code) return true;
+    if(uid && refByUid === uid) return true;
+    if(email && refByEmail === email) return true;
+    return false;
+  });
+}
+
+function getUserReferralCount(u){ return getUserReferrals(u).length; }
+
+// পরবর্তী ইনকাম-ব্যাচে পৌঁছাতে কত টাকা বাকি
+function getNextIncomeTier(income){
+  for(const t of INCOME_TIERS){ if(income < t.threshold) return t; }
+  return null;
+}
+
+window.toggleBatch = function(headEl){
+  const body = headEl.nextElementSibling;
+  if(body) body.classList.toggle("collapsed");
+};
+
+// ============================================================
+// COMMISSION PAGE RENDER — ইনকাম-ভিত্তিক, স্বয়ংক্রিয়
+// ============================================================
+window.renderCommission = function(){
+  if(!$("commissionBatches")) return;
+
+  const totalUsers = users.length;
+  const counts = { SO:0, BO:0, AM:0, GM:0, R15:0, none:0 };
+  users.forEach(u => {
+    const code = getIncomeBatchCode(getUserReferralIncome(u));
+    if(code) counts[code]++;
+    else counts.none++;
+  });
+
+  $("cmTotalUsers").textContent = totalUsers;
+  $("cmSO").textContent = counts.SO + counts.BO + counts.AM + counts.GM + counts.R15;
+  $("cmBO").textContent = counts.BO + counts.AM + counts.GM + counts.R15;
+  $("cmR15").textContent = counts.R15;
+
+  const batchFilter = $("cmBatchFilter")?.value || "";
+  const q = ($("cmSearch")?.value || "").trim().toLowerCase();
+
+  // ফিল্টার — শুধু যাদের ইনকাম-ব্যাচ আছে (যদি না "none" ফিল্টার দেয়া হয়)
+  let filtered = users.filter(u => {
+    const code = getIncomeBatchCode(getUserReferralIncome(u)) || "none";
+    if(batchFilter){
+      if(batchFilter === "SO") return code === "SO"; // শুধু SO (BO+ বাদ)
+      return code === batchFilter;
+    }
+    // ডিফল্ট: শুধু যাদের অন্তত একটা ব্যাচ আছে
+    return code !== "none";
+  });
+  if(batchFilter === "none"){
+    filtered = users.filter(u => !getIncomeBatchCode(getUserReferralIncome(u)));
+  }
+
+  if(q){
+    filtered = filtered.filter(u => {
+      const hay = [u.name, u.full_name, u.email, u.phone].filter(Boolean).join(" ").toLowerCase();
+      return hay.includes(q);
+    });
+  }
+
+  if(!filtered.length){
+    $("commissionBatches").innerHTML = `<div class="empty">কোনো ইউজার পাওয়া যায়নি।</div>`;
+    return;
+  }
+
+  // গ্রুপিং: R15 > GM > AM > BO > SO > none
+  const groups = { R15: [], GM: [], AM: [], BO: [], SO: [], none: [] };
+  filtered.forEach(u => {
+    const code = getIncomeBatchCode(getUserReferralIncome(u)) || "none";
+    groups[code].push(u);
+  });
+
+  // প্রতিটি গ্রুপের ভেতরে ইনকাম দিয়ে সর্ট (বেশি ইনকাম উপরে)
+  Object.values(groups).forEach(arr => arr.sort((a,b) => getUserReferralIncome(b) - getUserReferralIncome(a)));
+
+  const groupMeta = {
+    R15: { label: "R15 · ৳১০ লাখ+", color: "#6a1b9a" },
+    GM:  { label: "GM · ৳২ লাখ+",   color: "#c2185b" },
+    AM:  { label: "AM · ৳৬০ হাজার+", color: "#ef6c00" },
+    BO:  { label: "BO · ৳২৫ হাজার+", color: "#1565c0" },
+    SO:  { label: "SO · ৳১০ হাজার+", color: "#2e7d32" },
+    none:{ label: "কোনো ব্যাচ নেই",  color: "#656d76" },
+  };
+
+  const renderGroup = (code, list) => {
+    if(!list.length) return "";
+    const meta = groupMeta[code];
+    const rows = list.map((u, i) => {
+      const refs = getUserReferrals(u);
+      const refCount = refs.length;
+      const income = getUserReferralIncome(u);
+      const nextTier = getNextIncomeTier(income);
+      const tierInfo = INCOME_TIERS.find(t => t.code === code);
+      const target = tierInfo?.threshold || 0;
+      const prog = target ? Math.min(100, Math.round((income / target) * 100)) : 100;
+      const remain = nextTier ? nextTier.threshold - income : 0;
+
+      const refChips = refs.slice(0, 5).map(r =>
+        `<span class="ref-chip">${esc(r.name || r.email || r.phone || "ইউজার")}</span>`
+      ).join("");
+      const moreRefs = refs.length > 5 ? `<span class="ref-chip">+${refs.length-5} আরও</span>` : "";
+
+      return `
+        <div class="batch-row" onclick="openUserDetail('${u.id}')">
+          <div class="info">
+            <b>${i+1}. ${esc(u.name || u.full_name || "নাম নেই")} ${incomeBadgeHTML(u)}</b>
+            <div class="row-line">
+              ${u.email ? `📧 ${esc(u.email)}` : ""}
+              ${u.phone ? ` · 📱 ${esc(u.phone)}` : ""}
+            </div>
+            <div class="row-line">
+              💰 ইনকাম: <b>৳${income.toLocaleString('en-IN')}</b> ·
+              👥 রেফার: <b>${refCount}</b> জন
+            </div>
+            ${target ? `
+            <div class="prog-wrap">
+              <div class="prog-bar">
+                <div class="prog-fill ${income >= target ? "done" : ""}" style="width:${prog}%"></div>
+              </div>
+              <div class="prog-text">
+                ${tierInfo.labelBn} টার্গেট · অর্জিত ৳${income.toLocaleString('en-IN')} (${prog}%)
+                ${nextTier ? ` · পরবর্তী ${nextTier.code} পেতে আরও ৳${remain.toLocaleString('en-IN')} দরকার` : " · সর্বোচ্চ ব্যাচে পৌঁছেছে ✅"}
+              </div>
+            </div>` : ""}
+            ${refCount > 0 ? `
+              <div class="row-line" style="margin-top:6px">
+                <b>রেফার:</b>
+                <div class="ref-chips">${refChips}${moreRefs}</div>
+              </div>
+            ` : ""}
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    return `
+      <div class="batch-group">
+        <div class="batch-head" onclick="toggleBatch(this)">
+          <h4>
+            <span class="inc-badge ${code === "none" ? "" : code}" style="font-size:14px;margin:0">${code === "none" ? "—" : code}</span>
+            <span style="color:${meta.color}">${meta.label}</span>
+          </h4>
+          <div class="batch-meta">মোট: ${list.length} জন</div>
+        </div>
+        <div class="batch-body">${rows}</div>
+      </div>
+    `;
+  };
+
+  $("commissionBatches").innerHTML = `
+    ${renderGroup("R15", groups.R15)}
+    ${renderGroup("GM", groups.GM)}
+    ${renderGroup("AM", groups.AM)}
+    ${renderGroup("BO", groups.BO)}
+    ${renderGroup("SO", groups.SO)}
+    ${groups.none.length ? renderGroup("none", groups.none) : ""}
+  `;
+};
+
+/* ============================================================
+   REST OF THE CODE
+   ============================================================ */
+async function fetchAll(name){
+  try{
+    const snap = await getDocs(collection(db, name));
+    const rows = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    rows.sort((a,b) => String(b.created_at||"").localeCompare(String(a.created_at||"")));
+    return rows;
+  }catch(err){ console.error("Fetch", name, err); return []; }
+}
+async function addRow(name, data){
+  return await addDoc(collection(db, name), {
+    ...data,
+    created_at: data.created_at || new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  });
+}
+async function updateRow(name, id, data){
+  return await updateDoc(doc(db, name, id), { ...data, updated_at: new Date().toISOString() });
+}
+async function deleteRow(name, id){
+  return await deleteDoc(doc(db, name, id));
+}
+async function checkAdmin(uid){
+  const snap = await getDoc(doc(db, "admin_users", uid));
+  return snap.exists();
+}
+
+function showLogin(){
+  $("bootScreen").style.display = "none";
+  $("loginScreen").style.display = "block";
+  $("appRoot").style.display = "none";
+  $("btnRefresh").style.display = "none";
+  $("btnLogout").style.display = "none";
+}
+function showApp(){
+  $("bootScreen").style.display = "none";
+  $("loginScreen").style.display = "none";
+  $("appRoot").style.display = "block";
+  $("btnRefresh").style.display = "inline-flex";
+  $("btnLogout").style.display = "inline-flex";
+  showPage("dashboard");
+}
+function showBoot(){
+  $("bootScreen").style.display = "flex";
+  $("loginScreen").style.display = "none";
+  $("appRoot").style.display = "none";
+}
+
+$("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = $("loginBtn");
+  const msg = $("loginMsg");
+  const email = $("adminEmail").value.trim();
+  const password = $("adminPassword").value;
+  msg.textContent = "";
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.textContent = "সঠিক ইমেইল দিন।"; return; }
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> লগইন হচ্ছে...';
+  try{ await signInWithEmailAndPassword(auth, email, password); }
+  catch(err){ msg.textContent = friendlyAuthError(err); }
+  finally{
+    btn.disabled = false;
+    btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg> লগইন করুন';
+  }
+});
+
+function friendlyAuthError(err){
+  const c = err.code || "";
+  if(c.includes("invalid-credential") || c.includes("wrong-password") || c.includes("user-not-found")) return "ইমেইল বা পাসওয়ার্ড ভুল।";
+  if(c.includes("too-many-requests")) return "অনেকবার ভুল হয়েছে। কিছুক্ষণ পর চেষ্টা করুন।";
+  if(c.includes("network")) return "নেটওয়ার্ক সমস্যা।";
+  return err.message || "লগইন হয়নি।";
+}
+
+$("btnLogout").addEventListener("click", async () => {
+  if(!confirm("লগআউট করবেন?")) return;
+  loaded = false;
+  await signOut(auth);
+});
+
+$("btnRefresh").addEventListener("click", async () => {
+  const btn = $("btnRefresh");
+  const label = $("btnRefreshLabel");
+  btn.disabled = true; label.textContent = "রিফ্রেশ হচ্ছে…";
+  try{ await loadAll(); }
+  finally{ btn.disabled = false; label.textContent = "রিফ্রেশ"; }
+});
+
+await setPersistence(auth, browserLocalPersistence);
+try{ if(auth.authStateReady) await auth.authStateReady(); }catch(_){}
+
+onAuthStateChanged(auth, async (user) => {
+  if(user){
+    const isAdmin = await checkAdmin(user.uid);
+    if(isAdmin){
+      showApp();
+      if(!loaded){
+        showBoot();
+        await loadAll();
+        loaded = true;
+        showApp();
+      }else showApp();
+    }else{
+      await signOut(auth);
+      showLogin();
+    }
+  }else{
+    loaded = false; currentUserId = null; showLogin();
+  }
+});
+
+async function loadAll(){
+  const [p,u,o,b,w] = await Promise.all([
+    fetchAll("products"), fetchAll("users"), fetchAll("orders"),
+    fetchAll("banners"), fetchAll("withdrawals")
+  ]);
+  products = p; users = u; orders = o; banners = b; withdrawals = w;
+  render();
+  if(currentUserId && document.getElementById("pageDetail").classList.contains("active")){
+    renderUserDetail(currentUserId);
+  }
+}
+
+function render(){
+  $("statUsers").textContent = users.length;
+  $("statOrders").textContent = orders.length;
+  $("statProducts").textContent = products.length;
+  $("statBanners").textContent = banners.length;
+  renderBanners();
+  renderProducts();
+  renderUsers();
+  renderOrders();
+  renderWithdrawals();
+  renderCommission();
+}
+
+async function fileToDataUrl(file, maxSide = 900, quality = 0.72, maxBytes = 120000){
+  if(!file.type.startsWith("image/")) throw new Error("শুধু ছবি দিন।");
+  const bitmap = await createImageBitmap(file);
+  let { width, height } = bitmap;
+  if(Math.max(width,height) > maxSide){
+    const s = maxSide / Math.max(width,height);
+    width = Math.round(width * s); height = Math.round(height * s);
+  }
+  const canvas = document.createElement("canvas");
+  canvas.width = width; canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#ffffff"; ctx.fillRect(0,0,width,height);
+  ctx.drawImage(bitmap, 0, 0, width, height);
+  bitmap.close?.();
+  let q = quality;
+  let blob = await new Promise(r => canvas.toBlob(r, "image/jpeg", q));
+  while(blob.size > maxBytes && q > 0.3){
+    q -= 0.08;
+    blob = await new Promise(r => canvas.toBlob(r, "image/jpeg", q));
+  }
+  if(blob.size > maxBytes) throw new Error("ছবিটি বেশি বড়। ছোট ছবি দিন।");
+  return await new Promise((res, rej) => {
+    const reader = new FileReader();
+    reader.onload = () => res(reader.result);
+    reader.onerror = () => rej(new Error("ছবি পড়া যায়নি।"));
+    reader.readAsDataURL(blob);
+  });
+}
+
+$("prodImageFiles").addEventListener("change", (e) => {
+  const files = Array.from(e.target.files || []);
+  if(files.length > 10){
+    alertBox("সতর্কতা", "সর্বোচ্চ ১০টি ছবি দিন।");
+    e.target.value = ""; $("productPreview").innerHTML = ""; selectedProductFiles = []; return;
+  }
+  selectedProductFiles = files;
+  $("productPreview").innerHTML = files.map(f => `<img src="${URL.createObjectURL(f)}" alt="">`).join("");
+});
+
+$("productForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const editId = $("editProductId").value;
+  const btn = $("productSubmitBtn");
+  btn.disabled = true;
+  try{
+    if(!editId && !selectedProductFiles.length) throw new Error("কমপক্ষে ১টি ছবি দিন।");
+    let images = [];
+    if(editId){
+      const ex = products.find(p => p.id === editId);
+      images = [...(ex?.images || [])];
+    }
+    for(let i=0;i<selectedProductFiles.length;i++){
+      btn.innerHTML = `<span class="spinner"></span> ছবি প্রস্তুত ${i+1}/${selectedProductFiles.length}`;
+      images.push(await fileToDataUrl(selectedProductFiles[i]));
+    }
+    if(!images.length) throw new Error("কমপক্ষে ১টি ছবি দিন।");
+    if(images.reduce((n,s) => n + s.length, 0) > 780000) throw new Error("ছবির মোট আকার বেশি। কম ছবি দিন।");
+    const row = {
+      title_bn: $("prodNameBn").value.trim(),
+      title_en: $("prodNameEn").value.trim(),
+      price: Number($("prodPrice").value),
+      bonus_amount: Math.max(0, Number($("prodBonus").value || 0)),
+      desc_bn: $("prodDescBn").value.trim(),
+      desc_en: $("prodDescEn").value.trim(),
+      images, rating: 5, reviews: 1, is_active: true
+    };
+    if(editId) await updateRow("products", editId, row);
+    else await addRow("products", row);
+    resetProductForm();
+    await loadAll();
+    alertBox("সফল", "পণ্য সংরক্ষণ হয়েছে।");
+  }catch(err){ alertBox("সমস্যা", err.message); }
+  finally{
+    btn.disabled = false;
+    btn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg> ${$("editProductId").value ? "আপডেট করুন" : "পণ্য পাবলিশ করুন"}`;
+  }
+});
+
+function resetProductForm(){
+  $("productForm").reset();
+  $("editProductId").value = "";
+  $("prodBonus").value = "0";
+  selectedProductFiles = [];
+  $("productPreview").innerHTML = "";
+  $("productCancelBtn").style.display = "none";
+  $("productFormTitle").innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg> নতুন পণ্য আপলোড করুন`;
+}
+window.cancelEditProduct = () => resetProductForm();
+
+window.editProduct = (id) => {
+  const p = products.find(x => x.id === id); if(!p) return;
+  $("editProductId").value = p.id;
+  $("prodNameBn").value = p.title_bn || "";
+  $("prodNameEn").value = p.title_en || "";
+  $("prodPrice").value = p.price || 0;
+  $("prodBonus").value = p.bonus_amount || 0;
+  $("prodDescBn").value = p.desc_bn || "";
+  $("prodDescEn").value = p.desc_en || "";
+  selectedProductFiles = [];
+  $("productPreview").innerHTML = (p.images||[]).map(src => `<img src="${esc(src)}" alt="">`).join("");
+  $("productCancelBtn").style.display = "inline-flex";
+  $("productFormTitle").innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> পণ্য এডিট করুন`;
+  showPage("productForm");
+};
+
+window.deleteProduct = async (id) => {
+  if(!confirm("পণ্যটি ডিলিট করবেন?")) return;
+  await deleteRow("products", id);
+  await loadAll();
+};
+
+function renderProducts(){
+  $("productList").innerHTML = products.length ? products.map((p,i) => `
+    <div class="list-item">
+      <div class="product-row">
+        <span class="serial-badge">${i+1}</span>
+        <img class="thumb" src="${esc((p.images||[])[0]||"")}" alt="">
+        <div class="info">
+          <b>${esc(p.title_bn)}</b>
+          <div class="row-line">৳${Number(p.price).toFixed(0)} · বোনাস ৳${Number(p.bonus_amount||0)}</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-outline btn-sm" onclick="editProduct('${p.id}')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> এডিট
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="deleteProduct('${p.id}')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg> ডিলিট
+        </button>
+      </div>
+    </div>
+  `).join("") : `<div class="empty">কোনো পণ্য নেই।</div>`;
+}
+
+$("bannerFile").addEventListener("change", (e) => {
+  selectedBannerFile = e.target.files?.[0] || null;
+  $("bannerPreview").innerHTML = selectedBannerFile
+    ? `<img class="banner-preview" src="${URL.createObjectURL(selectedBannerFile)}" alt="">` : "";
+});
+
+$("bannerForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if(!selectedBannerFile){ alertBox("ত্রুটি", "ব্যানার ছবি দিন।"); return; }
+  const btn = $("bannerSubmitBtn");
+  btn.disabled = true;
+  try{
+    btn.innerHTML = '<span class="spinner"></span> প্রস্তুত হচ্ছে...';
+    const url = await fileToDataUrl(selectedBannerFile, 900, 0.72, 120000);
+    await addRow("banners", { image_url: url });
+    $("bannerForm").reset();
+    $("bannerPreview").innerHTML = "";
+    selectedBannerFile = null;
+    await loadAll();
+    alertBox("সফল", "ব্যানার প্রকাশ হয়েছে।");
+  }catch(err){ alertBox("সমস্যা", err.message); }
+  finally{
+    btn.disabled = false;
+    btn.innerHTML = `<svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg> ব্যানার প্রকাশ করুন`;
+  }
+});
+
+window.deleteBanner = async (id) => {
+  if(!confirm("ব্যানারটি ডিলিট করবেন?")) return;
+  await deleteRow("banners", id);
+  await loadAll();
+};
+
+function renderBanners(){
+  $("bannerList").innerHTML = banners.length ? banners.map((b,i) => `
+    <div class="list-item">
+      <div class="info">
+        <b>ব্যানার ${i+1}</b>
+        <img src="${esc(b.image_url)}" style="display:block;width:100%;max-height:140px;object-fit:contain;margin-top:8px;border-radius:6px;border:1px solid var(--line)">
+      </div>
+      <div class="actions">
+        <button class="btn btn-danger btn-sm" onclick="deleteBanner('${b.id}')">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg> ডিলিট
+        </button>
+      </div>
+    </div>
+  `).join("") : `<div class="empty">কোনো ব্যানার নেই।</div>`;
+}
+
+function renderUsers(){
+  $("userList").innerHTML = users.length ? users.map((u,i) => `
+    <div class="list-item">
+      <div class="info" style="cursor:pointer" onclick="openUserDetail('${u.id}')">
+        <b>${i+1}. ${esc(u.name || u.full_name || "নাম নেই")} ${incomeBadgeHTML(u)}</b>
+        <div class="row-line">${esc(u.email || "")} · ${esc(u.phone || "")}</div>
+        <div class="row-line">যোগদান: ${u.created_at ? new Date(u.created_at).toLocaleString("bn-BD") : "—"}</div>
+        <div class="row-line">
+          <span class="status-tag ${u.unlocked ? "ok" : "bad"}">${u.unlocked ? "Unlocked" : "Locked"}</span>
+          <span style="margin-left:6px">ব্যালেন্স: ৳${Number(u.balance || 0)}</span>
+          <span style="margin-left:6px">রেফার: ${getUserReferralCount(u)} জন</span>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn ${u.unlocked ? "btn-outline" : "btn-primary"} btn-sm" onclick="event.stopPropagation(); toggleUserAccess('${u.id}', ${!u.unlocked})">
+          ${u.unlocked ? "Lock" : "Unlock"}
+        </button>
+        <button class="btn btn-outline btn-sm" onclick="openUserDetail('${u.id}')">বিস্তারিত</button>
+      </div>
+    </div>
+  `).join("") : `<div class="empty">কোনো ইউজার নেই।</div>`;
+}
+
+window.toggleUserAccess = async (id, unlocked) => {
+  if(!confirm(unlocked ? "এই ইউজারকে Unlock করবেন?" : "এই ইউজারকে Lock করবেন?")) return;
+  await updateRow("users", id, { unlocked });
+  await loadAll();
+  alertBox("সফল", unlocked ? "Unlocked হয়েছে।" : "Locked হয়েছে।");
+};
+
+function gsRow({icon, label, value, mono=false, badge=null, sub=null, clickable=false, onclickAttr=""}){
+  return `
+    <div class="gs-row ${clickable?"clickable":""}" ${onclickAttr}>
+      <div class="gs-icon">${icon}</div>
+      <div class="gs-content">
+        <div class="gs-label">${esc(label)}</div>
+        <div class="gs-value ${mono?"mono":""}">${value ?? "—"}</div>
+        ${badge ? `<div class="gs-badge ${badge.cls||""}">${esc(badge.text)}</div>` : ""}
+        ${sub ? sub : ""}
+      </div>
+    </div>`;
+}
+
+const ICONS = {
+  user: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+  mail: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>`,
+  phone: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+  wallet: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>`,
+  lock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+  referral: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+  calendar: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`,
+  order: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`,
+  chevron: `<svg class="gs-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>`,
+  hash: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h16M4 15h16M10 3L8 21M16 3l-2 18"/></svg>`,
+  money: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+  card: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>`,
+  mapPin: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+  clock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`,
+};
+
+window.openUserDetail = (userId) => {
+  currentUserId = userId;
+  $("detailBackBtn").onclick = () => showPage("users");
+  renderUserDetail(userId);
+  showPage("detail");
+};
+
+function renderUserDetail(userId){
+  const u = users.find(x => x.id === userId); if(!u) return;
+  const refs = getUserReferrals(u);
+  const refCount = refs.length;
+  const income = getUserReferralIncome(u);
+  const incCode = getIncomeBatchCode(income);
+  const nextTier = getNextIncomeTier(income);
+  const hist = orders.filter(o =>
+    [u.email, u.id, u.auth_user_id, u.uid].filter(Boolean).some(v =>
+      [o.user_email, o.user_id, o.auth_user_id, o.uid].filter(Boolean).includes(v)
+    )
+  );
+  const totalSpent = hist.reduce((s,o) => s + Number(o.amount || o.total || 0), 0);
+  const initial = (u.name || u.full_name || u.email || "?").trim().charAt(0).toUpperCase();
+  $("detailTitle").textContent = "ইউজার প্রোফাইল";
+
+  const orderRows = hist.length ? hist.map((o,i) => `
+    <div class="list-item" style="cursor:pointer" onclick="openOrderDetail('${o.id}')">
+      <div class="info">
+        <b>অর্ডার ${i+1} · ${esc(o.product_name || o.title || "—")}</b>
+        <div class="row-line">৳${Number(o.amount || o.total || 0)} · <span class="status-tag ${o.status==="Delivered"?"ok":o.status==="Cancelled"?"bad":"warn"}">${esc(o.status || "Pending")}</span></div>
+        <div class="row-line">${esc(o.created_at || "")}</div>
+      </div>
+    </div>
+  `).join("") : `<div class="gs-empty">এই ইউজারের কোনো অর্ডার নেই।</div>`;
+
+  const refRows = refs.length ? refs.map((r,i) => `
+    <div class="list-item">
+      <div class="info">
+        <b>${i+1}. ${esc(r.name || r.full_name || "নাম নেই")}</b>
+        <div class="row-line">${esc(r.email || "")} · ${esc(r.phone || "")}</div>
+        <div class="row-line">যোগদান: ${r.created_at ? new Date(r.created_at).toLocaleString("bn-BD") : "—"}</div>
+      </div>
+    </div>
+  `).join("") : `<div class="gs-empty">কোনো রেফার নেই।</div>`;
+
+  $("detailContent").innerHTML = `
+    <div class="gs-wrap">
+      <div class="gs-header">
+        <div class="gs-avatar">${esc(initial)}</div>
+        <div style="min-width:0">
+          <div class="gs-title">${esc(u.name || u.full_name || "নাম নেই")} ${incomeBadgeHTML(u, "big")}</div>
+          <div class="gs-sub">${esc(u.email || "—")}</div>
+        </div>
+      </div>
+
+      <div class="gs-section">
+        <div class="gs-section-label">প্রোফাইল তথ্য</div>
+        ${gsRow({icon: ICONS.user, label: "নাম", value: esc(u.name || u.full_name || "—")})}
+        ${gsRow({icon: ICONS.mail, label: "ইমেইল", value: esc(u.email || "—"), mono: true})}
+        ${gsRow({icon: ICONS.phone, label: "ফোন", value: esc(u.phone || "—")})}
+        ${gsRow({icon: ICONS.calendar, label: "যোগদানের তারিখ", value: u.created_at ? new Date(u.created_at).toLocaleString("bn-BD") : "—"})}
+        ${gsRow({icon: ICONS.hash, label: "UID", value: esc(u.id), mono: true})}
+      </div>
+
+      <div class="gs-section">
+        <div class="gs-section-label">রেফার ও কমিশন ব্যাচ (স্বয়ংক্রিয়)</div>
+        ${gsRow({icon: ICONS.money, label: "রেফার ইনকাম", value: `৳ ${income.toLocaleString('en-IN')}`})}
+        ${gsRow({icon: ICONS.referral, label: "মোট রেফার", value: `${refCount} জন`})}
+        ${gsRow({icon: ICONS.referral, label: "রেফার কোড", value: esc(u.referCode || "—"), mono: true})}
+        ${gsRow({icon: ICONS.money, label: "বর্তমান ব্যাচ", value: incCode || "কোনো ব্যাচ নেই", badge: incCode ? {text: incCode === "R15" ? "সর্বোচ্চ ব্যাচ 🏆" : `পরবর্তী ${nextTier.code} পেতে ৳${(nextTier.threshold - income).toLocaleString('en-IN')} বাকি`, cls: incCode === "R15" ? "ok" : "warn"} : {text: "SO পেতে ৳" + (10000 - income).toLocaleString('en-IN') + " বাকি", cls: "warn"}})}
+        ${gsRow({icon: ICONS.wallet, label: "ব্যালেন্স", value: `৳ ${Number(u.balance || 0).toLocaleString('en-IN')}`})}
+        ${gsRow({icon: ICONS.lock, label: "স্ট্যাটাস", value: u.unlocked ? "Unlocked" : "Locked", badge: {text: u.unlocked ? "সক্রিয়" : "লকড", cls: u.unlocked ? "ok" : "bad"}})}
+        ${gsRow({icon: ICONS.money, label: "মোট খরচ", value: `৳ ${totalSpent.toLocaleString('en-IN')}`})}
+      </div>
+
+      <div class="gs-section">
+        <div class="gs-row clickable" onclick="togglePanel('userRefsPanel', this)">
+          <div class="gs-icon">${ICONS.referral}</div>
+          <div class="gs-content">
+            <div class="gs-label">রেফার তালিকা</div>
+            <div class="gs-value">${refCount} জন</div>
+          </div>
+          ${ICONS.chevron}
+        </div>
+        <div class="gs-subpanel" id="userRefsPanel">${refRows}</div>
+      </div>
+
+      <div class="gs-section">
+        <div class="gs-row clickable" onclick="togglePanel('userOrdersPanel', this)">
+          <div class="gs-icon">${ICONS.order}</div>
+          <div class="gs-content">
+            <div class="gs-label">অর্ডার হিস্ট্রি</div>
+            <div class="gs-value">${hist.length} টি অর্ডার · মোট ৳${totalSpent.toLocaleString('en-IN')}</div>
+          </div>
+          ${ICONS.chevron}
+        </div>
+        <div class="gs-subpanel" id="userOrdersPanel">${orderRows}</div>
+      </div>
+    </div>
+  `;
+}
+
+window.openOrderDetail = (orderId) => {
+  const o = orders.find(x => x.id === orderId); if(!o) return;
+  $("detailBackBtn").onclick = () => {
+    if(currentUserId){ showPage("detail"); renderUserDetail(currentUserId); }
+    else showPage("orders");
+  };
+  renderOrderDetail(o);
+  showPage("detail");
+};
+
+function renderOrderDetail(o){
+  $("detailTitle").textContent = "অর্ডার বিস্তারিত";
+  const items = Array.isArray(o.items) ? o.items : [];
+  const itemRows = items.length ? items.map((it, i) => `
+    <div class="list-item" style="flex-direction:column;align-items:flex-start">
+      <div class="info">
+        <b>${i+1}. ${esc(it.title || it.name || "পণ্য")}</b>
+        <div class="row-line">পরিমাণ: ${Number(it.qty || 1)} · দাম: ৳${Number(it.price || 0)} · বোনাস: ৳${Number(it.bonus_amount || 0)}</div>
+      </div>
+    </div>
+  `).join("") : `<div class="gs-empty">পণ্যের বিস্তারিত নেই।</div>`;
+
+  const addr = o.address || {};
+  const addrText = [addr.village, addr.union, addr.upazila, addr.district, addr.division]
+    .filter(Boolean).join(", ") || addr.full || "—";
+
+  const stat = String(o.status || "Pending");
+  const statCls = stat === "Delivered" ? "ok" : stat === "Cancelled" ? "bad" : "warn";
+  const bonus = items.reduce((s,it) => s + Math.max(0,Number(it.bonus_amount||0))*Math.max(1,Number(it.qty||1)), 0);
+
+  $("detailContent").innerHTML = `
+    <div class="gs-wrap">
+      <div class="gs-header">
+        <div class="gs-avatar" style="background:var(--accent-soft);color:var(--accent)">${ICONS.order.replace("<svg","<svg style='width:24px;height:24px'")}</div>
+        <div style="min-width:0">
+          <div class="gs-title">অর্ডার ${esc(o.product_name || items[0]?.title || "—")}</div>
+          <div class="gs-sub">ID: ${esc(o.id)}</div>
+        </div>
+      </div>
+
+      <div class="gs-section">
+        <div class="gs-section-label">অর্ডার তথ্য</div>
+        ${gsRow({icon: ICONS.hash, label: "অর্ডার আইডি", value: esc(o.id), mono: true})}
+        ${gsRow({icon: ICONS.clock, label: "স্ট্যাটাস", value: stat, badge: { text: stat, cls: statCls }})}
+        ${gsRow({icon: ICONS.calendar, label: "অর্ডারের তারিখ", value: o.created_at ? new Date(o.created_at).toLocaleString("bn-BD") : "—"})}
+        ${gsRow({icon: ICONS.money, label: "মোট মূল্য", value: `৳ ${Number(o.amount || o.total || 0).toLocaleString("en-IN")}`})}
+        ${gsRow({icon: ICONS.money, label: "পণ্য বোনাস", value: `৳ ${bonus.toLocaleString("en-IN")}`, badge: { text: o.bonus_processed ? "প্রদান হয়েছে" : "অপেক্ষমাণ", cls: o.bonus_processed ? "ok" : "warn" }})}
+        ${gsRow({icon: ICONS.card, label: "পেমেন্ট মেথড", value: esc(o.payment_method || "—")})}
+      </div>
+
+      <div class="gs-section">
+        <div class="gs-section-label">গ্রাহক</div>
+        ${gsRow({icon: ICONS.user, label: "নাম", value: esc(o.user_name || "—")})}
+        ${gsRow({icon: ICONS.mail, label: "ইমেইল", value: esc(o.user_email || "Guest"), mono: true})}
+        ${gsRow({icon: ICONS.phone, label: "ফোন", value: esc(o.customer_phone || "—")})}
+        ${gsRow({icon: ICONS.mapPin, label: "ঠিকানা", value: esc(addrText)})}
+      </div>
+
+      <div class="gs-section">
+        <div class="gs-row clickable" onclick="togglePanel('orderItemsPanel', this)">
+          <div class="gs-icon">${ICONS.order}</div>
+          <div class="gs-content">
+            <div class="gs-label">পণ্যের তালিকা</div>
+            <div class="gs-value">${items.length} টি আইটেম</div>
+          </div>
+          ${ICONS.chevron}
+        </div>
+        <div class="gs-subpanel" id="orderItemsPanel">${itemRows}</div>
+      </div>
+
+      <div class="gs-section" style="padding:14px 22px;display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid var(--line)">
+        <select class="form-control" style="width:auto;padding:8px 12px" onchange="setOrderStatus('${o.id}', this.value)">
+          <option value="">স্ট্যাটাস পরিবর্তন</option>
+          ${["Approved","Confirmed","Processing","Shipped","Delivered","Cancelled"].map(s => `<option value="${s}" ${stat===s?"selected":""}>${s==="Approved"?"Approve":s}</option>`).join("")}
+        </select>
+        <button class="btn btn-outline btn-sm" onclick="archiveOrder('${o.id}')">Archive</button>
+      </div>
+    </div>
+  `;
+}
+
+window.togglePanel = (id, rowEl) => {
+  const el = document.getElementById(id); if(!el) return;
+  el.classList.toggle("show");
+  rowEl.classList.toggle("expanded", el.classList.contains("show"));
+};
+
+function renderOrders(){
+  const visible = orders.filter(o => !o.archived);
+  const statusRank = s => ["Delivered","Shipped","Processing","Confirmed","Approved","Pending","Cancelled"].indexOf(String(s||"Pending"));
+  visible.sort((a,b) => statusRank(a.status) - statusRank(b.status));
+
+  $("orderList").innerHTML = visible.length ? visible.map((o,i) => `
+      <div class="list-item">
+        <div class="info" style="cursor:pointer" onclick="openOrderDetail('${o.id}')">
+          <b>অর্ডার ${i+1} · ${esc(o.id)}</b>
+          <div class="row-line">গ্রাহক: ${esc(o.user_name || "—")} · ${esc(o.user_email || "Guest")}</div>
+          <div class="row-line">পণ্য: ${esc(o.product_name || "—")} · ৳${Number(o.amount || 0)} · ${esc(o.payment_method || "")}</div>
+          <div class="row-line">স্ট্যাটাস: <span class="status-tag ${o.status==="Delivered"?"ok":o.status==="Cancelled"?"bad":"warn"}">${esc(o.status || "Pending")}</span></div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-outline btn-sm" onclick="openOrderDetail('${o.id}')">বিস্তারিত</button>
+        </div>
+      </div>`).join("") : `<div class="empty">কোনো অর্ডার নেই।</div>`;
+}
+
+window.setOrderStatus = async (id, status) => {
+  if(!status) return;
+  const order = orders.find(o => o.id === id); if(!order) return;
+  try{
+    const now = new Date();
+    const retention = (status === "Confirmed" || status === "Approved") && !order.confirmed_at
+      ? { confirmed_at: now.toISOString(), expires_at: new Date(now.getTime() + 30*24*60*60*1000).toISOString() }
+      : {};
+    if((status === "Confirmed" || status === "Approved") && !order.bonus_processed){
+      const phone = String(order.customer_phone || "").replace(/\D/g, "");
+      const email = String(order.user_email || "").trim().toLowerCase();
+      const buyer = users.find(x =>
+        (email && String(x.email || "").toLowerCase() === email) ||
+        (phone && String(x.phone || "").replace(/\D/g, "") === phone)
+      );
+      const productBonus = (order.items||[]).reduce((s,it) => s + Math.max(0,Number(it.bonus_amount||0))*Math.max(1,Number(it.qty||1)), 0);
+      if(buyer && productBonus > 0){
+        await updateRow("users", buyer.id, {
+          balance: Number(buyer.balance || 0) + productBonus,
+          history: [ ...(buyer.history||[]), { text: "পণ্য কেনার বোনাস", amount: productBonus } ]
+        });
+      }
+      if(buyer && !buyer.unlocked){
+        const eligible = orders.filter(o => {
+          const same = [buyer.email, buyer.id, buyer.auth_user_id, buyer.uid].filter(Boolean).some(v =>
+            [o.user_email, o.user_id, o.auth_user_id, o.uid].filter(Boolean).includes(v)
+          ) || String(o.customer_phone||"").replace(/\D/g,"") === phone;
+          const okStatus = o.id === id || ["confirmed","approved","processing","shipped","delivered"].includes(String(o.status||"").toLowerCase());
+          return same && okStatus;
+        }).reduce((s,o) => s + Number(o.amount || o.total || 0), 0);
+        if(eligible >= 200){ await updateRow("users", buyer.id, { unlocked: true }); }
+      }
+      await updateRow("orders", id, { status, ...retention, bonus_processed: true });
+    }else{
+      await updateRow("orders", id, { status, ...retention });
+    }
+    await loadAll();
+    if($("pageDetail").classList.contains("active")){
+      const ord = orders.find(x => x.id === id);
+      if(ord) renderOrderDetail(ord);
+    }
+    alertBox("সফল", status === "Approved" ? "অর্ডার অ্যাপ্রুভ হয়েছে।" : "স্ট্যাটাস আপডেট হয়েছে।");
+  }catch(err){ alertBox("সমস্যা", err.message); }
+};
+
+window.archiveOrder = async (id) => {
+  if(!confirm("এই অর্ডার Archive করবেন?")) return;
+  await updateRow("orders", id, { archived: true, archived_at: new Date().toISOString() });
+  await loadAll();
+  if(currentUserId){ showPage("detail"); renderUserDetail(currentUserId); }
+  else showPage("orders");
+};
+
+function renderWithdrawals(){
+  $("withdrawalList").innerHTML = withdrawals.length ? withdrawals.map((w,i) => `
+    <div class="list-item">
+      <div class="info">
+        <b>উইথড্র ${i+1} · ${esc(w.user_name || "—")}</b>
+        <div class="row-line">${esc(w.user_email || "")} · ৳${Number(w.amount || 0).toFixed(2)}</div>
+        <div class="row-line">${esc(w.payment_method || "")} · ${esc(w.account_number || "")}</div>
+        <div class="row-line">স্ট্যাটাস: <span class="status-tag ${w.status==="Paid"?"ok":w.status==="Rejected"?"bad":"warn"}">${esc(w.status)}</span></div>
+      </div>
+      <div class="actions">
+        ${w.status==="Pending" ? `
+          <button class="btn btn-primary btn-sm" onclick="setWithdrawalStatus('${w.id}','Approved')">অ্যাপ্রুভ</button>
+          <button class="btn btn-danger btn-sm" onclick="setWithdrawalStatus('${w.id}','Rejected')">রিজেক্ট</button>` : ""}
+        ${w.status==="Approved" ? `<button class="btn btn-accent btn-sm" onclick="setWithdrawalStatus('${w.id}','Paid')">পেমেন্ট সম্পন্ন</button>` : ""}
+      </div>
+    </div>
+  `).join("") : `<div class="empty">কোনো উইথড্র রিকোয়েস্ট নেই।</div>`;
+}
+
+window.setWithdrawalStatus = async (id, status) => {
+  try{
+    const w = withdrawals.find(x => x.id === id); if(!w) return;
+    if(status === "Rejected" && w.status !== "Rejected" && w.user_id){
+      const u = users.find(x => x.id === w.user_id);
+      if(u) await updateRow("users", u.id, { balance: Number(u.balance || 0) + Number(w.amount || 0) });
+    }
+    await updateRow("withdrawals", id, { status });
+    await loadAll();
+  }catch(err){ alertBox("সমস্যা", err.message); }
+};
+
+window.showPage = (name) => {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  const t = $("page" + name.charAt(0).toUpperCase() + name.slice(1));
+  if(t) t.classList.add("active");
+  if(name === "commission") renderCommission();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+</script>
+</body>
+</html>
